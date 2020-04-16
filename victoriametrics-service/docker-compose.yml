@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  ghost:
+    image: 'bitnami/ghost:3'
+    container_name: cortex_service-1
+    environment:
+      - MARIADB_HOST=mariadb
+      - MARIADB_PORT_NUMBER=3306
+      - MARIADB_ROOT_USER=root
+      - MARIADB_ROOT_PASSWORD=geircode123456789
+      - GHOST_DATABASE_USER=bn_ghost
+      - GHOST_DATABASE_NAME=bitnami_ghost
+      - GHOST_DATABASE_PASSWORD=geircode123456789
+      - ALLOW_EMPTY_PASSWORD=no
+      - GHOST_HOST=localhost
+      - GHOST_PORT_NUMBER=8900
+      - GHOST_USERNAME=geircode
+      - GHOST_PASSWORD=geircode123456789
+      - GHOST_EMAIL=geircode@example.com
+      - BLOG_TITLE=geircode
+    ports:
+      - '8900:2368'
+    volumes:
+      - 'ghost_data:/bitnami'
+    depends_on:
+      - mariadb
+    networks:
+      - learning-victoriametrics_network       
+    
+volumes:
+  mariadb_data:
+    driver: local
+  ghost_data:
+    driver: local
+        
+networks:
+  learning-victoriametrics_network:
+    name: learning-victoriametrics_network
+    external: true
+            

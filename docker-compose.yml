@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  learning-victoriametrics:
+    image: geircode/learning-victoriametrics:latest
+    build:
+      context: .
+      dockerfile: Dockerfile    
+    container_name: learning-victoriametrics-1
+    volumes:
+      # - ".:/app"       
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - learning-victoriametrics_network
+networks:
+  learning-victoriametrics_network:
+    name: learning-victoriametrics_network
+    external: true
+          

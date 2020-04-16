@@ -1,0 +1,1 @@
+docker exec -it learning-victoriametrics-filecontainer-1 /bin/sh

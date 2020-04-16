@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  learning-victoriametrics-filecontainer:
+    image: geircode/learning-victoriametrics-filecontainer:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: learning-victoriametrics-filecontainer-1
+    networks:
+      - learning-victoriametrics-filecontainer-network      
+
+networks:
+  learning-victoriametrics-filecontainer-network:
+    name: learning-victoriametrics-filecontainer-network    
+    

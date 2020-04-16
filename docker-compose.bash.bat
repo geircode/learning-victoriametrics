@@ -1,0 +1,1 @@
+docker exec -it learning-victoriametrics-1 /bin/bash
