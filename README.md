@@ -101,9 +101,13 @@ docker exec -it learning_victoriametrics-1 /bin/bash
 
 # How to build the **docker-compose** file
 
-This build is dased on the docs here => https://victoriametricsmetrics.io/docs/getting-started/getting-started-blocks-storage/, and the docker images provided directly from the [**victoriametricsproject**](https://hub.docker.com/u/victoriametricsproject)..
+Actually, VictoriaMetrics has built their own. That's very nice. It means that this might be easy to setup.
 
+Here is the docker-compose provided by VictoriaMetrics:
 
+https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/deployment/docker/docker-compose.yml
+
+When I try to run "docker-compose up" on this,... what will happen. Will it work immediately and flawlessly?
 
 
 

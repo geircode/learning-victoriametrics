@@ -1,41 +1,106 @@
-version: '3.7'
-
+version: '3.5'
 services:
-  ghost:
-    image: 'bitnami/ghost:3'
-    container_name: cortex_service-1
-    environment:
-      - MARIADB_HOST=mariadb
-      - MARIADB_PORT_NUMBER=3306
-      - MARIADB_ROOT_USER=root
-      - MARIADB_ROOT_PASSWORD=geircode123456789
-      - GHOST_DATABASE_USER=bn_ghost
-      - GHOST_DATABASE_NAME=bitnami_ghost
-      - GHOST_DATABASE_PASSWORD=geircode123456789
-      - ALLOW_EMPTY_PASSWORD=no
-      - GHOST_HOST=localhost
-      - GHOST_PORT_NUMBER=8900
-      - GHOST_USERNAME=geircode
-      - GHOST_PASSWORD=geircode123456789
-      - GHOST_EMAIL=geircode@example.com
-      - BLOG_TITLE=geircode
-    ports:
-      - '8900:2368'
-    volumes:
-      - 'ghost_data:/bitnami'
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.17.1
     depends_on:
-      - mariadb
+      - "victoriametrics"
+    ports:
+      - 9090:9090
+    volumes:
+      - promdata:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
     networks:
-      - learning-victoriametrics_network       
-    
+      - vm_net
+    restart: always
+  victoriametrics:
+    container_name: victoriametrics
+    image: victoriametrics/victoria-metrics
+    ports:
+      - 8428:8428
+      - 2003:2003
+      - 4242:4242
+    volumes:
+      - vmdata:/storage
+    command:
+      - '--storageDataPath=/storage'
+      - '--graphiteListenAddr=:2003'
+      - '--opentsdbListenAddr=:4242'
+      - '--httpListenAddr=:8428'
+    networks:
+      - vm_net
+    restart: always
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:6.7.1
+    entrypoint: >
+      /bin/sh -c "
+      cd /var/lib/grafana &&
+      mkdir -p dashboards &&
+      sed 's/$${DS_PROMETHEUS}/Prometheus/g' vm.json > dashboards/vm.json &&
+      /run.sh"
+    depends_on:
+      - "victoriametrics"
+    ports:
+      - 3000:3000
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - ./provisioning/:/etc/grafana/provisioning/
+      - ./../../dashboards/victoriametrics.json:/var/lib/grafana/vm.json
+    networks:
+      - vm_net
+    restart: always
 volumes:
-  mariadb_data:
-    driver: local
-  ghost_data:
-    driver: local
-        
+  promdata: {}
+  vmdata: {}
+  grafanadata: {}
+
 networks:
-  learning-victoriametrics_network:
-    name: learning-victoriametrics_network
-    external: true
+  vm_net:
+
+
+
+# version: '3.7'
+
+# services:
+#   ghost:
+#     image: 'bitnami/ghost:3'
+#     container_name: victoriametrics_service-1
+#     environment:
+#       - MARIADB_HOST=mariadb
+#       - MARIADB_PORT_NUMBER=3306
+#       - MARIADB_ROOT_USER=root
+#       - MARIADB_ROOT_PASSWORD=geircode123456789
+#       - GHOST_DATABASE_USER=bn_ghost
+#       - GHOST_DATABASE_NAME=bitnami_ghost
+#       - GHOST_DATABASE_PASSWORD=geircode123456789
+#       - ALLOW_EMPTY_PASSWORD=no
+#       - GHOST_HOST=localhost
+#       - GHOST_PORT_NUMBER=8900
+#       - GHOST_USERNAME=geircode
+#       - GHOST_PASSWORD=geircode123456789
+#       - GHOST_EMAIL=geircode@example.com
+#       - BLOG_TITLE=geircode
+#     ports:
+#       - '8900:2368'
+#     volumes:
+#       - 'ghost_data:/bitnami'
+#     depends_on:
+#       - mariadb
+#     networks:
+#       - victoriametrics_network       
+    
+# volumes:
+#   mariadb_data:
+#     driver: local
+#   ghost_data:
+#     driver: local
+        
+# networks:
+#   victoriametrics_network:
+#     name: victoriametrics_network
+#     external: true
             
