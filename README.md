@@ -1,28 +1,117 @@
-# Default template for using Containers as a workspace
+ 
 
-## Docker and Docker-Compose uses .env filen:
-COMPOSE_CONVERT_WINDOWS_PATHS=1
-    - makes it possible to share Sockets on Windows    
-COMPOSE_PROJECT_NAME=<name>_<id> i.e "learning-victoriametrics"
-    - overrides the default name of the compose project name so that the name of the network becomes unique
+# Background
 
-## How to use this workspace template
+I wanted to learn how to setup VictoriaMetrics from a Container point of view to able to collect Prometheus metrics.
 
-Click on "Open Repository in Container":
 
-![image-20200315121957102](files/image-20200315121957102.png)
 
-And copy in the url of the repo: https://github.com/geircode/template-workspace-remote-ssh
+# What is VictoriaMetrics
 
-This will create a container and clone this repository into the container with the credentials you used to clone the repository locally.
+> https://victoriametrics.com/
+>
+> Open source time series database and long-term remote storage for Prometheus
+>
+> VictoriaMetrics is fast, cost-effective and scalable time-series  database. It can be used as long-term remote storage for Prometheus. It is available in [binary releases](https://github.com/VictoriaMetrics/VictoriaMetrics/releases), [docker images](https://hub.docker.com/r/victoriametrics/victoria-metrics/) and in [source code](https://github.com/VictoriaMetrics/VictoriaMetrics). 
 
-### Do not use Volume Mounts in Windows
 
-I try to avoid using Volume Mounts that mounts the local filesystem into the container, because this is always the biggest PAIN when setting up any workshop with alot of other peoples laptops with different setups and network policy limitations. Volume mounts in Windows also changes the file access permissions and forces strange LF/CR and LF problems when opening files.
 
-https://code.visualstudio.com/docs/remote/containers-advanced#_a-basic-remote-example
+## Workspace container source
 
-*In fact, the **Remote-Containers: Open Repository in Container...** command in the Command Palette (F1) uses this same technique. If you already have a `devcontainer.json` file in a GitHub repository that references an image or Dockerfile, the command will automatically use a named volume instead of a bind mount - which also works with remote hosts.*
+https://github.com/geircode/learning-victoriametrics 
 
-Named volumes are ok since they do not depend on volume mounting to local network paths.
 
+
+# Getting started
+
+1. [Start the workspace container](#Start the workspace container)
+2. [Attach Visual Studio Code to the running container](#Attach Visual Studio Code to the running container)
+3. [Start the VictoriaMetrics Container from within the workspace container](#Start the VictoriaMetrics Container from within the workspace container)
+
+
+
+## Start the workspace container
+
+From within this Container we will do all VictoriaMetrics related stuff.
+
+1. Start CMD/Powershell in Windows
+
+2. Get the source code
+
+```
+git clone https://github.com/geircode/learning-victoriametrics 
+cd learning-victoriametrics
+```
+
+3. Run the script “`docker-compose.build.all.bat`“ or “[docker-compose.build.all.sh](http://docker-compose.build.all.sh)“ if you are on Linux.
+
+This will start container with the name “**learning_victoriametrics-1**“:
+
+![geircode > 2020-04-15: Learning VictoriaMetrics in Container > image-20200415-121132.png](wiki/images/image-20200415-121132.png)
+
+
+
+## Attach Visual Studio Code to the running container
+
+1. Start Visual Studio Code the root folder of the repository
+
+```
+git clone https://github.com/geircode/learning-victoriametrics 
+cd learning-victoriametrics 
+code .
+```
+
+2. Install the proposed extensions
+
+3. Attach to the already running workspace container
+
+![geircode > 2020-04-15: Learning VictoriaMetrics in Container > image-20200415-121914.png](wiki/images/image-20200415-121914.png)
+
+Find the container with the name “**learning_victoriametrics-1**“ and click it. This will install Visual Studio Code server into the  container and attach the Visual Studio Code client to this server.
+
+4. Open /app folder
+
+![geircode > 2020-04-15: Learning VictoriaMetrics in Container > image-20200415-122226.png](wiki/images/image-20200415-122226.png)
+
+5. Install workspace extension recommendations, and reload
+
+![geircode > 2020-04-15: Learning VictoriaMetrics in Container > image-20200415-122416.png](wiki/images/image-20200415-122416.png)
+
+Congrats! You are now running a Visual Studio Code instance within a container.
+
+## Start the VictoriaMetrics Container from within the workspace container
+
+1. Start a terminal in Visual Studio Code
+
+![geircode > 2020-04-15: Learning VictoriaMetrics in Container > image-20200415-123710.png](wiki/images/image-20200415-123710.png)
+
+This will be equivalent to run this docker command manually:
+
+```
+docker exec -it learning_victoriametrics-1 /bin/bash
+```
+
+![geircode > 2020-04-15: Learning VictoriaMetrics in Container > image-20200415-123958.png](wiki/images/image-20200415-123958.png)
+
+2. Run the “**docker-compose.up.sh**“ script
+
+
+
+####
+
+# How to build the **docker-compose** file
+
+This build is dased on the docs here => https://victoriametricsmetrics.io/docs/getting-started/getting-started-blocks-storage/, and the docker images provided directly from the [**victoriametricsproject**](https://hub.docker.com/u/victoriametricsproject)..
+
+
+
+
+
+####
+
+# Resources
+
+- https://victoriametricsmetrics.io/
+- https://github.com/victoriametricsproject/victoriametrics
+
+# answer-22
