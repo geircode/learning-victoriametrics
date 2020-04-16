@@ -19,5 +19,3 @@ docker exec -it victoriametrics_service-1 /bin/bash
 
 echo "### docker logs victoriametrics_service-1"
 docker logs victoriametrics_service-1
-echo "### docker logs mariadb"
-docker logs mariadb
