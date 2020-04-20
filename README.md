@@ -225,6 +225,19 @@ https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/deployment/docker
 
 Sure, it works. But other folks can not simply download the Dockerfile and build it themselves. Where is the Docker Container for running the makefile script?
 
+- **Had to install GO because I needed to create an image with a shell**
+
+```dockerfile
+# Golang
+ENV GOLANG_VERSION 1.14.2
+RUN curl -fL https://storage.googleapis.com/golang/go$GOLANG_VERSION.linux-amd64.tar.gz -o go.linux-amd64.tar.gz
+RUN tar -xzf go.linux-amd64.tar.gz -C /usr/local
+ENV PATH /usr/local/go/bin:$PATH
+RUN go version
+```
+
+To able to set the **PATH** variable, it can not be set by the **RUN** command and "export" because this will only affect Docker builder. It needs to be set by the "**ENV**" command to persist into the container and make GO available on the commandline.
+
 
 
 # Resources
