@@ -21,4 +21,8 @@ RUN rm *
 
 WORKDIR /app
 
+# Make all shell scripts default executable
+RUN find . -name "*.sh" -print && \
+    find /app -name "*.sh" -execdir chmod u+x {} +
+
 ENTRYPOINT tail -f /dev/null

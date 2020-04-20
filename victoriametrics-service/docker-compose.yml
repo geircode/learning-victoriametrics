@@ -10,13 +10,13 @@ services:
       - 4242:4242
     environment:
       - storageDataPath=/storage
-      - graphiteListenAddr=:2003
-      - opentsdbListenAddr=:4242
-      - httpListenAddr=:8428
+      - graphiteListenAddr=:2004
+      - opentsdbListenAddr=:4243
+      - httpListenAddr=:8429
     volumes:
       - vmdata:/storage
-    # command:
-    #   - '-envflag.enable'
+    command:
+      - '-envflag.enable'
     networks:
       - learning-victoriametrics_network
     restart: always
