@@ -8,7 +8,8 @@ services:
       dockerfile: Dockerfile    
     container_name: learning-victoriametrics-1
     volumes:
-      # - ".:/app"       
+      # - ".:/app"
+      - appdata:/app            
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       - learning-victoriametrics_network
@@ -16,4 +17,5 @@ networks:
   learning-victoriametrics_network:
     name: learning-victoriametrics_network
     external: true
-          
+volumes:
+  appdata: {}

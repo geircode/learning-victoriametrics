@@ -17,6 +17,12 @@ RUN ls -al
 # Docker CLI
 RUN tar --strip-components=1 -xvzf docker.tgz -C /usr/local/bin
 
+# Golang
+RUN tar --strip-components=1 -xvzf go.linux-amd64.tar.gz -C /usr/local/bin
+
+RUN tar -C /usr/local -xzf go.linux-amd64.tar.gz
+RUN tar -C /usr/local/bin -xzf go.linux-amd64.tar.gz
+
 RUN rm *
 
 WORKDIR /app

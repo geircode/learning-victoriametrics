@@ -39,8 +39,6 @@ services:
   #     - learning-victoriametrics_network
   #   restart: always
 
-
-
   # prometheus:
   #   container_name: prometheus
   #   image: prom/prometheus:v2.17.1
