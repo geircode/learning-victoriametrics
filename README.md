@@ -18,6 +18,8 @@ I wanted to learn how to setup VictoriaMetrics from a Container point of view to
 
 ## Workspace container source
 
+What is a Workspace Container? It's a isolated containerized environment that contains everything you need to be able to follow this article in the exact same way I did when creating this article.
+
 https://github.com/geircode/learning-victoriametrics 
 
 
@@ -189,6 +191,39 @@ Restarting...
 
 
 ## How to build the **docker-compose** file
+
+
+
+
+
+## Problems and hickups discovered during the development of this article
+
+- **No default shell installed in the container**
+
+For some reason, VictoriaMetrics has choosen another shell for their container... Why.
+
+```
+docker exec -it victoriametrics_service-1 /bin/sh
+docker exec -it victoriametrics_service-1 /bin/bash
+```
+
+Aha, it's because they wanted the image supersmall. The image I have is just 14MB big.
+
+https://medium.com/@valyala/stripping-dependency-bloat-in-victoriametrics-docker-image-983fb5912b0d
+
+This also means that it's not possible to open a terminal into the container just to see what is actually stored there and how the filestructure is setup.
+
+
+
+- **No "single source of truth" Dockerfile**
+
+They actually build the container image by scripts explicit rather having a Dockerfile do this 'declaratively'. Meaning, a Dockerfile always creates the same image each time while a script that first spin a container and then install a lot of stuff and then commit the image??
+
+This means that you can not be sure what Image you are running, because it's based on some volatile scripts instead of using a simple Dockerfile.
+
+https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/deployment/docker/Makefile
+
+Sure, it works. But other folks can not simply download the Dockerfile and build it themselves. Where is the Docker Container for running the makefile script?
 
 
 
