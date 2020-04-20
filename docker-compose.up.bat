@@ -1,7 +1,6 @@
 cd %~dp0
 docker rm -f learning-victoriametrics-1
 docker-compose -f docker-compose.yml down --remove-orphans
-docker-compose -f docker-compose.yml pull
 
 docker network create -d overlay --attachable learning-victoriametrics_network
 
