@@ -18,10 +18,8 @@ RUN ls -al
 RUN tar --strip-components=1 -xvzf docker.tgz -C /usr/local/bin
 
 # Golang
-RUN tar --strip-components=1 -xvzf go.linux-amd64.tar.gz -C /usr/local/bin
-
-RUN tar -C /usr/local -xzf go.linux-amd64.tar.gz
-RUN tar -C /usr/local/bin -xzf go.linux-amd64.tar.gz
+RUN tar -xzf go.linux-amd64.tar.gz -C /usr/local  && \
+    export PATH=$PATH:/usr/local/go/bin
 
 RUN rm *
 
