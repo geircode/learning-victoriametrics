@@ -14,8 +14,6 @@ I wanted to learn how to setup VictoriaMetrics from a Container point of view to
 >
 > VictoriaMetrics is fast, cost-effective and scalable time-series  database. It can be used as long-term remote storage for Prometheus. It is available in [binary releases](https://github.com/VictoriaMetrics/VictoriaMetrics/releases), [docker images](https://hub.docker.com/r/victoriametrics/victoria-metrics/) and in [source code](https://github.com/VictoriaMetrics/VictoriaMetrics). 
 
-
-
 ## Workspace container source
 
 What is a Workspace Container? It's a isolated containerized environment that contains everything you need to be able to follow this article in the exact same way I did when creating this article.
@@ -23,12 +21,11 @@ What is a Workspace Container? It's a isolated containerized environment that co
 https://github.com/geircode/learning-victoriametrics 
 
 
-
 # Getting started
 
-1. [Start the workspace container](#Start the workspace container)
-2. [Attach Visual Studio Code to the running container](#Attach Visual Studio Code to the running container)
-3. [Start the VictoriaMetrics Container from within the workspace container](#Start the VictoriaMetrics Container from within the workspace container)
+1. [Start the workspace container](#start-the-workspace-container)
+2. [Attach Visual Studio Code to the running container](#attach-visual-studio-code-to-the-running-container)
+3. [Start the VictoriaMetrics Container from within the workspace container](#start-the-victoriametrics-container-from-within-the-workspace-container)
 
 
 
