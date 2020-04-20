@@ -99,6 +99,9 @@ docker exec -it learning_victoriametrics-1 /bin/bash
 
 ####
 
+<details>
+  <summary>How to build the **docker-compose** file. First try.</summary>
+
 # How to build the **docker-compose** file
 
 Actually, VictoriaMetrics has built their own. That's very nice. It means that this might be easy to setup.
@@ -109,13 +112,89 @@ https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/deployment/docker
 
 When I try to run "docker-compose up" on this,... what will happen. Will it work immediately and flawlessly?
 
+**<font color="red">Nope</font>**, and I got this error when trying to run "**docker-compose up**":
+
+```bash
+root@c83ef56b9ac5:/app/victoriametrics-service# docker-compose up -d
+
+Creating network "victoriametrics_service_vm_net" with the default driver
+Creating volume "victoriametrics_service_promdata" with default driver
+Creating volume "victoriametrics_service_vmdata" with default driver
+Creating volume "victoriametrics_service_grafanadata" with default driver
+Creating victoriametrics ... done
+Creating prometheus      ... error
+Creating grafana         ... done
+
+ERROR: for prometheus  Cannot start service prometheus: OCI runtime create failed: container_linux.go:349: starting container process caused "process_linux.go:449: container init caused \"rootfs_linux.go:58: mounting \\\"/app/victoriametrics-service/prometheus.yml\\\" to rootfs \\\"/var/lib/docker/overlay2/9c14a51dd9a0b2b56e029e704a7e5150e4de3595b778a10a83f48b119bb4b8c9/merged\\\" at \\\"/var/lib/docker/overlay2/9c14a51dd9a0b2b56e029e704a7e5150e4de3595b778a10a83f48b119bb4b8c9/merged/etc/prometheus/prometheus.yml\\\" caused \\\"not a directory\\\"\"": unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
+
+ERROR: for prometheus  Cannot start service prometheus: OCI runtime create failed: container_linux.go:349: starting container process caused "process_linux.go:449: container init caused \"rootfs_linux.go:58: mounting \\\"/app/victoriametrics-service/prometheus.yml\\\" to rootfs \\\"/var/lib/docker/overlay2/9c14a51dd9a0b2b56e029e704a7e5150e4de3595b778a10a83f48b119bb4b8c9/merged\\\" at \\\"/var/lib/docker/overlay2/9c14a51dd9a0b2b56e029e704a7e5150e4de3595b778a10a83f48b119bb4b8c9/merged/etc/prometheus/prometheus.yml\\\" caused \\\"not a directory\\\"\"": unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
+ERROR: Encountered errors while bringing up the project.
+root@c83ef56b9ac5:/app/victoriametrics-service# 
+```
+
+It seems that I am missing the file "**prometheus.yml**". Ok, it seems that the docker-compose file is mounting alot of external files into the container.
+
+What if I git clone https://github.com/VictoriaMetrics/VictoriaMetrics and try to run "docker-compose up" on the original place?
+
+1. **git clone** inside the workspace container
+
+<img align="left" src="wiki/images/image-20200416160508518.png">
+
+2. Run "**docker-compose up**" on https://github.com/VictoriaMetrics/VictoriaMetrics/blob/master/deployment/docker/docker-compose.yml
+
+Usually, this is a good test to see if the implementation has been tested continuously alot of times on different machines and environments.
+
+**<font color="red">Nope</font>**, I got the same error. 
+
+3. Trying to comment out the prometheus.yml mount.
+
+That worked. Well, the containers are running without error, but VictoriaMetrics endpoint is not responding.
+
+These endpoints are starting up:
+
+ <table style="width:100%">
+  <tr>
+    <th>Service</th>
+    <th>Endpoint</th>
+  </tr>
+  <tr>
+    <td>Prometheus</td>
+    <td>http://localhost:9090/graph</td>
+  </tr>
+  <tr>
+    <td>Grafana</td>
+    <td>http://localhost:3000</td>
+  </tr>
+  <tr>
+    <td>Grafana</td>
+    <td>http://localhost:2003</td>
+  </tr>
+  <tr>
+    <td>Grafana</td>
+    <td>http://localhost:4242</td>
+  </tr>
+  <tr>
+    <td>Grafana</td>
+    <td>http://localhost:8484</td>
+  </tr>
+</table> 
+
+![image-20200416162843260](wiki/images/image-20200416162843260.png)
+
+... and now I found this guide => https://github.com/VictoriaMetrics/VictoriaMetrics/wiki/Single-server-VictoriaMetrics
+
+Restarting...
+
+</details>
 
 
-####
+## How to build the **docker-compose** file
+
+
 
 # Resources
 
-- https://victoriametricsmetrics.io/
-- https://github.com/victoriametricsproject/victoriametrics
-
-# answer-22
+- https://victoriametrics.com/
+- https://victoriametrics.github.io
+- https://github.com/VictoriaMetrics/VictoriaMetrics
+- https://hub.docker.com/u/victoriametrics
