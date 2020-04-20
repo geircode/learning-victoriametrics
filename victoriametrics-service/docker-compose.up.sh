@@ -14,6 +14,9 @@ echo sleeping 5 secs
 sleep 5
 # http://localhost:9090/
 
+# Test connection
+curl -v http://victoriametrics_service:8428/metrics
+
 echo "Opening a terminal to the Container..."
 docker exec -it victoriametrics_service-1 /bin/bash
 
