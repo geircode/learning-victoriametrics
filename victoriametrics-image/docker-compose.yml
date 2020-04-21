@@ -7,15 +7,24 @@ services:
       context: .
       dockerfile: Dockerfile    
     container_name: victoriametrics_ubuntu-1
+    ports:
+      - 8428:8428
+      - 2003:2003
+      - 4242:4242
+    environment:
+      - storageDataPath=/storage
+      - graphiteListenAddr=:2004
+      - opentsdbListenAddr=:4243
+      - httpListenAddr=:8429
     volumes:
-      # - ".:/app"
-      # - appdata:/app            
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - vmdata:/storage
+    command:
+      - '-envflag.enable'    
     networks:
-      - victoriametrics_ubuntu_network
+      - learning-victoriametrics_network
 networks:
-  victoriametrics_ubuntu_network:
-    name: victoriametrics_ubuntu_network
+  learning-victoriametrics_network:
+    name: learning-victoriametrics_network
     external: true
 volumes:
-  appdata: {}
+  vmdata: {}
