@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . /app
 
 RUN apt-get update
-RUN apt-get install -y git dos2unix unzip htop curl inetutils-ping
+RUN apt-get install -y git dos2unix unzip htop curl inetutils-ping make
 
 RUN pip install -r requirements.txt 
 
