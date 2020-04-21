@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  victoriametrics_ubuntu:
+    image: geircode/victoriametrics_ubuntu:latest
+    build:
+      context: .
+      dockerfile: Dockerfile    
+    container_name: victoriametrics_ubuntu-1
+    volumes:
+      # - ".:/app"
+      # - appdata:/app            
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - victoriametrics_ubuntu_network
+networks:
+  victoriametrics_ubuntu_network:
+    name: victoriametrics_ubuntu_network
+    external: true
+volumes:
+  appdata: {}

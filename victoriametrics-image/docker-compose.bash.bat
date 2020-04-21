@@ -1,0 +1,1 @@
+docker exec -it victoriametrics_ubuntu-1 /bin/bash
